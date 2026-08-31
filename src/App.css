@@ -19,10 +19,10 @@
   --font-body:    'DM Sans', sans-serif;
   --radius: 6px;
   --transition: 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  --px: clamp(1.5rem, 5vw, 6rem);
+  --px: clamp(1.25rem, 5vw, 6rem);
 }
 
-/* ── RESET GLOBAL ── */
+/* ── RESET GLOBAL E TRAVA DE ESTOURO ── */
 *, *::before, *::after { 
   box-sizing: border-box; 
   margin: 0; 
@@ -31,6 +31,7 @@
 
 html, body {
   width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
@@ -43,7 +44,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Resets específicos para botões e entradas para prevenir estilos nativos do iOS WebKit */
 button, input, select, textarea, .btn {
   -webkit-appearance: none;
   appearance: none;
@@ -53,19 +53,21 @@ button, input, select, textarea, .btn {
 a { color: inherit; text-decoration: none; }
 p { line-height: 1.75; color: var(--text-mid); }
 
-.app { width: 100%; }
+.app { width: 100%; overflow-x: hidden; }
 
-/* Todas as seções 100% largura */
+/* Estruturas de Seção */
 .hero, .numbers, .section, .sobre,
 .especialidades, .atuacao, .cta, .footer, .nav {
   width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
 }
 
-/* Wrapper interno padronizado */
 .inner {
   width: 100%;
   padding-left: var(--px);
   padding-right: var(--px);
+  box-sizing: border-box;
 }
 
 /* ── REVEAL ── */
@@ -82,6 +84,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   font-family: var(--font-body);
   font-weight: 600;
@@ -92,7 +95,8 @@ p { line-height: 1.75; color: var(--text-mid); }
   cursor: pointer;
   transition: all var(--transition);
   border: 2px solid transparent;
-  white-space: nowrap;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 .btn--primary {
   background: var(--gold);
@@ -113,7 +117,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 .btn--outline:hover { border-color: var(--gold); color: var(--gold); }
 .btn--lg { padding: 1rem 2.2rem; font-size: 1rem; }
 
-/* ── EYEBROW ── */
+/* ── EYEBROW E SECTION TITLE ── */
 .eyebrow {
   display: inline-block;
   font-size: 0.72rem;
@@ -125,7 +129,6 @@ p { line-height: 1.75; color: var(--text-mid); }
 }
 .eyebrow--light { color: var(--gold-light); }
 
-/* ── SECTION TITLE ── */
 .section__title {
   font-family: var(--font-display);
   font-weight: 700;
@@ -164,7 +167,13 @@ p { line-height: 1.75; color: var(--text-mid); }
   letter-spacing: -0.01em;
 }
 .nav__sub { font-size: 0.7rem; color: var(--gold-light); letter-spacing: 0.06em; }
-.nav__links { display: flex; align-items: center; gap: 2rem; }
+
+/* Links no Desktop */
+.nav__links { 
+  display: flex; 
+  align-items: center; 
+  gap: 2rem; 
+}
 .nav__links a {
   font-size: 0.88rem;
   font-weight: 500;
@@ -173,34 +182,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 }
 .nav__links a:hover { color: var(--gold-light); }
 
-.nav__links--open { 
-  display: flex !important;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  background: var(--navy-deep) !important;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  z-index: 999;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.nav__cta {
-  background: var(--gold) !important;
-  color: var(--navy-deep) !important;
-  padding: 0.55rem 1.3rem !important;
-  border-radius: var(--radius) !important;
-  font-weight: 700 !important;
-  font-size: 0.85rem !important;
-}
-.nav__cta:hover {
-  background: var(--gold-light) !important;
-  box-shadow: 0 4px 14px rgba(201,168,76,0.4);
-}
+/* Menu Hambúrguer (Oculto no Desktop) */
 .nav__hamburger {
   display: none;
   flex-direction: column;
@@ -208,9 +190,9 @@ p { line-height: 1.75; color: var(--text-mid); }
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 6px;
   position: relative;
-  z-index: 1000;
+  z-index: 1001;
 }
 .nav__hamburger span {
   display: block;
@@ -218,6 +200,15 @@ p { line-height: 1.75; color: var(--text-mid); }
   background: var(--white);
   border-radius: 2px;
   transition: all 0.3s;
+}
+
+.nav__cta {
+  background: var(--gold) !important;
+  color: var(--navy-deep) !important;
+  padding: 0.55rem 1.3rem !important;
+  border-radius: var(--radius) !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
 }
 
 /* ══════════════════════════════
@@ -285,7 +276,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 .hero__name {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+  font-size: clamp(2.2rem, 5.5vw, 4.5rem);
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--white);
@@ -305,7 +296,12 @@ p { line-height: 1.75; color: var(--text-mid); }
   color: rgba(245,240,232,0.78);
   margin-bottom: 2.2rem;
 }
-.hero__actions { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.8rem; }
+.hero__actions { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 1rem; 
+  margin-bottom: 1.8rem; 
+}
 .hero__instagram {
   display: inline-flex;
   align-items: center;
@@ -314,8 +310,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   color: rgba(255,255,255,0.55);
   transition: color var(--transition);
 }
-.hero__instagram:hover { color: var(--gold-light); }
-.hero__photo-wrap { display: flex; justify-content: center; }
+.hero__photo-wrap { display: flex; justify-content: center; width: 100%; }
 .hero__photo-frame {
   position: relative;
   width: 100%;
@@ -350,7 +345,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 }
 .hero__photo-badge {
   position: absolute;
-  bottom: 20px; left: -20px;
+  bottom: 20px; left: -10px;
   z-index: 2;
   background: var(--gold);
   color: var(--navy-deep);
@@ -410,13 +405,9 @@ p { line-height: 1.75; color: var(--text-mid); }
 }
 
 /* ══════════════════════════════
-   SEÇÃO GENÉRICA
+   SEÇÃO GENÉRICA E SOBRE
 ══════════════════════════════ */
 .section { padding: 6rem 0; }
-
-/* ══════════════════════════════
-   SOBRE
-══════════════════════════════ */
 .sobre { background: var(--off-white); }
 .sobre__grid {
   width: 100%;
@@ -426,7 +417,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   gap: 5rem;
   align-items: center;
 }
-.sobre__fotos { position: relative; height: 560px; }
+.sobre__fotos { position: relative; height: 560px; width: 100%; }
 .sobre__foto {
   position: absolute;
   border-radius: 10px;
@@ -463,10 +454,7 @@ p { line-height: 1.75; color: var(--text-mid); }
    ESPECIALIDADES
 ══════════════════════════════ */
 .especialidades { background: var(--beige); }
-.especialidades__inner {
-  width: 100%;
-  padding: 0 var(--px);
-}
+.especialidades__inner { width: 100%; padding: 0 var(--px); }
 .esp__wrapper {
   background: rgba(26,46,74,0.1);
   border: 1px solid rgba(26,46,74,0.1);
@@ -474,20 +462,11 @@ p { line-height: 1.75; color: var(--text-mid); }
   overflow: hidden;
   margin-top: 1rem;
 }
-
-.esp__row {
-  display: flex;
-  width: 100%;
-}
-
-.esp__row--3 .esp__col { flex: 1; border-bottom: 1px solid rgba(26,46,74,0.07); }
-.esp__row--2 .esp__col { flex: 1; }
-
+.esp__row { display: flex; width: 100%; }
+.esp__row--3 .esp__col, .esp__row--2 .esp__col { flex: 1; }
 .esp__col { display: flex; flex-direction: column; }
 .esp__col .reveal { height: 100%; }
-
-/* Divisórias verticais entre cards */
-.esp__row--3 .esp__col:not(:last-child) .esp-card { border-right: 1px solid rgba(26,46,74,0.07); }
+.esp__row--3 .esp__col:not(:last-child) .esp-card,
 .esp__row--2 .esp__col:not(:last-child) .esp-card { border-right: 1px solid rgba(26,46,74,0.07); }
 
 .esp-card {
@@ -498,7 +477,6 @@ p { line-height: 1.75; color: var(--text-mid); }
   flex-direction: column;
   height: 100%;
 }
-
 .esp-card:hover { background: #f8f6f2; }
 .esp-card__icon { font-size: 2rem; margin-bottom: 1rem; }
 .esp-card__title {
@@ -529,7 +507,6 @@ p { line-height: 1.75; color: var(--text-mid); }
   gap: 1.5rem;
   margin: 2rem 0 3rem;
 }
-
 .clinica-card {
   background: rgba(201,168,76,0.07);
   border: 1px solid rgba(201,168,76,0.25);
@@ -537,6 +514,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   padding: 2.2rem 2.5rem;
   position: relative;
   height: 100%;
+  box-sizing: border-box;
 }
 .clinica-card__badge {
   position: absolute;
@@ -564,13 +542,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   color: var(--gold-light);
   transition: color var(--transition);
 }
-.clinica-card__contacts a:hover { color: var(--white); }
-.atuacao__subtitle {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  color: var(--white);
-  margin-bottom: 1.5rem;
-}
+
 .hospitais__grid {
   display: flex;
   flex-wrap: wrap;
@@ -593,7 +565,6 @@ p { line-height: 1.75; color: var(--text-mid); }
   height: 100%;
   box-sizing: border-box;
 }
-.hospital-card:hover { background: rgba(201,168,76,0.06); border-color: rgba(201,168,76,0.3); }
 .hospital-card__sigla {
   flex-shrink: 0;
   width: 60px; height: 60px;
@@ -616,7 +587,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 .hospital-card__info p { font-size: 0.82rem; color: rgba(245,240,232,0.6); margin-top: 0.3rem; line-height: 1.5; }
 
 /* ══════════════════════════════
-   CTA
+   CTA E FOOTER
 ══════════════════════════════ */
 .cta {
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-deep) 100%);
@@ -635,7 +606,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 .cta__title {
   font-family: var(--font-display);
   font-weight: 900;
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.2rem, 5vw, 4rem);
   line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--white);
@@ -651,9 +622,6 @@ p { line-height: 1.75; color: var(--text-mid); }
 }
 .cta__actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
 
-/* ══════════════════════════════
-   FOOTER
-══════════════════════════════ */
 .footer {
   background: var(--navy-deep);
   border-top: 1px solid rgba(201,168,76,0.15);
@@ -673,34 +641,54 @@ p { line-height: 1.75; color: var(--text-mid); }
 .footer__brand { display: flex; flex-direction: column; gap: 0.3rem; }
 .footer__brand strong { font-size: 1.05rem; color: var(--white); font-family: var(--font-display); }
 .footer__brand span { font-size: 0.8rem; color: rgba(245,240,232,0.45); }
-.footer__links { display: flex; gap: 1.5rem; align-items: center; }
-.footer__links a { font-size: 0.85rem; color: rgba(245,240,232,0.5); transition: color var(--transition); }
-.footer__links a:hover { color: var(--gold-light); }
+.footer__links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+.footer__links a { font-size: 0.85rem; color: rgba(245,240,232,0.5); }
 .footer__copy { text-align: center; font-size: 0.75rem; color: rgba(245,240,232,0.28); }
 
 /* ══════════════════════════════
-   RESPONSIVE (AJUSTES E COMPATIBILIDADE)
+   MEDIA QUERIES (BREAKPOINTS CORRIGIDOS)
 ══════════════════════════════ */
-@media (max-width: 900px) {
-  :root { --px: 1.25rem; }
-
-  .nav { padding: max(0.9rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) 0.9rem max(1.25rem, env(safe-area-inset-left)); }
+/* Ajuste para tablets e telas médias: Ativa o menu mobile antes de quebrar o layout */
+@media (max-width: 1024px) {
   .nav__links {
-    display: none;
-    position: fixed; inset: 0;
-    background: var(--navy-deep);
+    display: none; /* Esconde links normais no cabeçalho */
+  }
+  
+  .nav__hamburger {
+    display: flex; /* Exibe o botão hambúrguer */
+  }
+
+  /* Estado do menu quando aberto via JS adicionando .nav__links--open */
+  .nav__links.nav__links--open {
+    display: flex !important;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--navy-deep) !important;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 2rem;
-    z-index: 99;
+    z-index: 1000;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
   }
-  .nav__links--open { display: flex; }
-  .nav__links a { font-size: 1.2rem; }
-  .nav__hamburger { display: flex; }
+
+  .nav__links.nav__links--open a {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 900px) {
+  :root { --px: 1.25rem; }
 
   .hero { padding: 6.5rem 0 3.5rem; }
-  .hero__content { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero__content { 
+    grid-template-columns: 1fr; 
+    gap: 2.5rem; 
+  }
   .hero__photo-wrap { order: -1; }
   .hero__photo-frame { max-width: 280px; margin: 0 auto; }
   .hero__photo-badge { left: 0; bottom: 10px; }
@@ -711,10 +699,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   .number-card { border-right: none; border-bottom: 1px solid rgba(15,30,50,0.15); }
   .number-card:last-child { border-bottom: none; }
 
-  .sobre { 
-    padding-top: 8rem !important; 
-  }
-
+  .sobre { padding-top: 3.5rem !important; }
   .sobre__grid { 
     grid-template-columns: 1fr; 
     gap: 2.5rem; 
@@ -723,8 +708,8 @@ p { line-height: 1.75; color: var(--text-mid); }
   .sobre__fotos { 
     position: relative;
     height: 320px; 
-    max-width: 340px; 
-    margin: 4rem auto 0 auto !important;
+    max-width: 100%; 
+    margin: 1rem auto 0 auto !important;
     width: 100%;
   }
 
@@ -746,16 +731,12 @@ p { line-height: 1.75; color: var(--text-mid); }
   }
 
   .esp__row { flex-direction: column; }
-  .esp__row--3 .esp__col,
-  .esp__row--2 .esp__col { border-bottom: 1px solid rgba(26,46,74,0.07); }
-  .esp__row--3 .esp__col:last-child,
-  .esp__row--2 .esp__col:last-child { border-bottom: none; }
+  .esp__row--3 .esp__col, .esp__row--2 .esp__col { border-bottom: 1px solid rgba(26,46,74,0.07); }
+  .esp__row--3 .esp__col:last-child, .esp__row--2 .esp__col:last-child { border-bottom: none; }
   .esp-card { border-right: none !important; height: auto; }
 
   .clinicas__grid { grid-template-columns: 1fr; }
-  .hospitais__grid > * {
-    width: 100%;
-  }
+  .hospitais__grid > * { width: 100%; }
   .section { padding: 3.5rem 0; }
   .atuacao { padding: 3.5rem 0; }
   .footer__inner { flex-direction: column; }
@@ -771,7 +752,12 @@ p { line-height: 1.75; color: var(--text-mid); }
     white-space: normal;
     text-align: center;
     padding: 0.85rem 1rem;
+    word-break: break-word;
   }
   
   .cta__actions { flex-direction: column; align-items: center; width: 100%; }
+  
+  .clinica-card {
+    padding: 1.8rem 1.25rem;
+  }
 }

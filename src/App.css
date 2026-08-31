@@ -23,18 +23,33 @@
 }
 
 /* ── RESET GLOBAL ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
 html, body {
   width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
+
 body {
   font-family: var(--font-body);
   background: var(--navy-deep);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Resets específicos para botões e entradas para prevenir estilos nativos do iOS WebKit */
+button, input, select, textarea, .btn {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
 a { color: inherit; text-decoration: none; }
 p { line-height: 1.75; color: var(--text-mid); }
 
@@ -57,6 +72,8 @@ p { line-height: 1.75; color: var(--text-mid); }
 .reveal {
   opacity: 0;
   transform: translateY(22px);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   transition: opacity 0.75s var(--transition), transform 0.75s var(--transition);
 }
 .revealed { opacity: 1; transform: translateY(0); }
@@ -131,8 +148,9 @@ p { line-height: 1.75; color: var(--text-mid); }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.9rem var(--px);
+  padding: max(0.9rem, env(safe-area-inset-top)) max(var(--px), env(safe-area-inset-right)) 0.9rem max(var(--px), env(safe-area-inset-left));
   background: rgba(15, 30, 50, 0.98);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(201,168,76,0.2);
   box-shadow: 0 2px 20px rgba(0,0,0,0.3);
@@ -161,12 +179,15 @@ p { line-height: 1.75; color: var(--text-mid); }
   inset: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background: var(--navy-deep) !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 2rem;
   z-index: 999;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 .nav__cta {
   background: var(--gold) !important;
@@ -204,6 +225,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 ══════════════════════════════ */
 .hero {
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy) 55%, var(--navy-mid) 100%);
@@ -320,9 +342,10 @@ p { line-height: 1.75; color: var(--text-mid); }
 .hero__photo {
   position: relative; z-index: 1;
   width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
   border-radius: 10px;
   object-fit: cover;
-  aspect-ratio: 3/4;
   display: block;
 }
 .hero__photo-badge {
@@ -549,10 +572,14 @@ p { line-height: 1.75; color: var(--text-mid); }
   margin-bottom: 1.5rem;
 }
 .hospitais__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1rem;
-  align-items: stretch;
+}
+.hospitais__grid > * {
+  width: calc(50% - 0.5rem);
+  box-sizing: border-box;
 }
 .hospital-card {
   background: rgba(255,255,255,0.04);
@@ -630,7 +657,7 @@ p { line-height: 1.75; color: var(--text-mid); }
 .footer {
   background: var(--navy-deep);
   border-top: 1px solid rgba(201,168,76,0.15);
-  padding: 2.5rem var(--px) 1.5rem;
+  padding: 2.5rem var(--px) max(1.5rem, env(safe-area-inset-bottom));
 }
 .footer__inner {
   width: 100%;
@@ -652,15 +679,12 @@ p { line-height: 1.75; color: var(--text-mid); }
 .footer__copy { text-align: center; font-size: 0.75rem; color: rgba(245,240,232,0.28); }
 
 /* ══════════════════════════════
-   RESPONSIVE
-══════════════════════════════ */
-/* ══════════════════════════════
-   RESPONSIVE (AJUSTES DE BUG)
+   RESPONSIVE (AJUSTES E COMPATIBILIDADE)
 ══════════════════════════════ */
 @media (max-width: 900px) {
   :root { --px: 1.25rem; }
 
-  .nav { padding: 0.9rem 1.25rem; }
+  .nav { padding: max(0.9rem, env(safe-area-inset-top)) max(1.25rem, env(safe-area-inset-right)) 0.9rem max(1.25rem, env(safe-area-inset-left)); }
   .nav__links {
     display: none;
     position: fixed; inset: 0;
@@ -679,7 +703,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   .hero__content { grid-template-columns: 1fr; gap: 2.5rem; }
   .hero__photo-wrap { order: -1; }
   .hero__photo-frame { max-width: 280px; margin: 0 auto; }
-  .hero__photo-badge { left: 0; bottom: 10px; } /* Evita vazar da tela */
+  .hero__photo-badge { left: 0; bottom: 10px; }
   .hero__name, .hero__specialty, .hero__desc { text-align: center; }
   .hero__badges, .hero__actions, .hero__instagram { justify-content: center; }
 
@@ -696,12 +720,11 @@ p { line-height: 1.75; color: var(--text-mid); }
     gap: 2.5rem; 
   }
 
-  /* Empurra todo o bloco de imagens para baixo */
   .sobre__fotos { 
     position: relative;
     height: 320px; 
     max-width: 340px; 
-    margin: 4rem auto 0 auto !important; /* Aumentado para descer abaixo do fundo amarelo */
+    margin: 4rem auto 0 auto !important;
     width: 100%;
   }
 
@@ -722,7 +745,6 @@ p { line-height: 1.75; color: var(--text-mid); }
     border: 4px solid var(--off-white);
   }
 
-  
   .esp__row { flex-direction: column; }
   .esp__row--3 .esp__col,
   .esp__row--2 .esp__col { border-bottom: 1px solid rgba(26,46,74,0.07); }
@@ -731,7 +753,9 @@ p { line-height: 1.75; color: var(--text-mid); }
   .esp-card { border-right: none !important; height: auto; }
 
   .clinicas__grid { grid-template-columns: 1fr; }
-  .hospitais__grid { grid-template-columns: 1fr; }
+  .hospitais__grid > * {
+    width: 100%;
+  }
   .section { padding: 3.5rem 0; }
   .atuacao { padding: 3.5rem 0; }
   .footer__inner { flex-direction: column; }
@@ -744,7 +768,7 @@ p { line-height: 1.75; color: var(--text-mid); }
   .btn { 
     width: 100%; 
     justify-content: center; 
-    white-space: normal; /* Permite quebrar linha no celular sem estourar a tela */
+    white-space: normal;
     text-align: center;
     padding: 0.85rem 1rem;
   }

@@ -55,8 +55,6 @@ const hospitais = [
     papel: "Cirurgião Geral e Preceptor de Cirurgia — parceria UFCA" },
   { sigla: "HRIS", nome: "Hospital Regional Inácio de Sá", local: "SESA/PE",
     papel: "Médico Cirurgião Geral de Emergência Concursado" },
-  { sigla: "HRC-PB", nome: "Hospital Regional de Cajazeiras", local: "Cajazeiras / PB",
-    papel: "Médico Cirurgião Geral de Emergência Concursado" },
 ];
 
 const WhatsIcon = () => (
